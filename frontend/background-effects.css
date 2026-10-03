@@ -1,0 +1,160 @@
+:root {
+    --pixel-trail-blue: #3c94bd;
+    --pixel-trail-bright: #60b2d4;
+    --pixel-trail-shadow: rgba(49, 138, 179, 0.22);
+}
+
+body {
+    --pixel-grid: rgba(47, 72, 92, 0.07);
+    --pixel-axis: rgba(57, 80, 98, 0.16);
+    --pixel-blue: rgba(55, 126, 161, 0.34);
+    --pixel-blue-muted: rgba(55, 126, 161, 0.29);
+    --pixel-mark: rgba(57, 80, 98, 0.22);
+    --pixel-mark-muted: rgba(57, 80, 98, 0.18);
+}
+
+body.dark-theme,
+body.dark {
+    --pixel-grid: rgba(255, 255, 255, 0.055);
+    --pixel-axis: rgba(225, 230, 235, 0.16);
+    --pixel-blue: rgba(83, 145, 174, 0.41);
+    --pixel-blue-muted: rgba(83, 145, 174, 0.36);
+    --pixel-mark: rgba(230, 236, 240, 0.21);
+    --pixel-mark-muted: rgba(230, 236, 240, 0.17);
+    --pixel-trail-blue: #65b2d0;
+    --pixel-trail-bright: #93d7e9;
+    --pixel-trail-shadow: rgba(86, 177, 215, 0.3);
+}
+
+body::before {
+    opacity: 0.84;
+
+    background-image:
+        repeating-linear-gradient(0deg, var(--pixel-grid) 0 1px, transparent 1px 88px),
+        repeating-linear-gradient(90deg, var(--pixel-grid) 0 1px, transparent 1px 88px),
+        linear-gradient(var(--pixel-axis), var(--pixel-axis)),
+        linear-gradient(var(--pixel-axis), var(--pixel-axis)),
+        linear-gradient(var(--pixel-blue), var(--pixel-blue)),
+        linear-gradient(var(--pixel-blue), var(--pixel-blue)),
+        linear-gradient(var(--pixel-blue), var(--pixel-blue)),
+        linear-gradient(var(--pixel-blue-muted), var(--pixel-blue-muted)),
+        linear-gradient(var(--pixel-blue-muted), var(--pixel-blue-muted)),
+        linear-gradient(var(--pixel-blue-muted), var(--pixel-blue-muted)),
+        linear-gradient(var(--pixel-mark), var(--pixel-mark)),
+        linear-gradient(var(--pixel-mark), var(--pixel-mark)),
+        linear-gradient(var(--pixel-mark-muted), var(--pixel-mark-muted)),
+        linear-gradient(var(--pixel-mark-muted), var(--pixel-mark-muted)),
+        linear-gradient(var(--pixel-blue-muted), var(--pixel-blue-muted)),
+        linear-gradient(var(--pixel-blue-muted), var(--pixel-blue-muted)),
+        linear-gradient(var(--pixel-blue-muted), var(--pixel-blue-muted)),
+        linear-gradient(var(--pixel-mark), var(--pixel-mark)),
+        linear-gradient(var(--pixel-mark), var(--pixel-mark));
+
+    background-size:
+        100% 88px,
+        88px 100%,
+        1px 100%,
+        100% 1px,
+        22px 9px,
+        10px 9px,
+        9px 18px,
+        22px 9px,
+        10px 9px,
+        9px 18px,
+        1px 13px,
+        13px 1px,
+        1px 11px,
+        11px 1px,
+        17px 8px,
+        8px 8px,
+        8px 15px,
+        1px 11px,
+        11px 1px;
+
+    background-position:
+        0 0,
+        0 0,
+        31% 0,
+        0 57%,
+        82% 16%,
+        calc(82% - 10px) calc(16% + 9px),
+        calc(82% + 13px) calc(16% + 9px),
+        8% 79%,
+        calc(8% + 22px) calc(79% + 9px),
+        calc(8% + 13px) calc(79% + 9px),
+        24% 34%,
+        calc(24% - 6px) calc(34% + 6px),
+        69% 69%,
+        calc(69% - 5px) calc(69% + 5px),
+        49% 23%,
+        calc(49% + 17px) 23%,
+        calc(49% + 17px) calc(23% + 8px),
+        45% 76%,
+        calc(45% - 5px) calc(76% + 5px);
+
+    background-repeat:
+        repeat,
+        repeat,
+        no-repeat,
+        no-repeat,
+        no-repeat,
+        no-repeat,
+        no-repeat,
+        no-repeat,
+        no-repeat,
+        no-repeat,
+        no-repeat,
+        no-repeat,
+        no-repeat,
+        no-repeat,
+        no-repeat,
+        no-repeat,
+        no-repeat,
+        no-repeat,
+        no-repeat;
+}
+
+body.dark-theme::before,
+body.dark::before {
+    opacity: 0.76;
+}
+
+.background-pixel-trail {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+
+    overflow: hidden;
+
+    pointer-events: none;
+}
+
+.background-pixel {
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 14px;
+    height: 14px;
+
+    margin: -3.5px 0 0 -3.5px;
+
+    background: var(--pixel-trail-blue);
+
+    opacity: 0;
+
+    transform: translate3d(-100px, -100px, 0);
+
+    will-change: transform, opacity;
+}
+
+.background-pixel.is-newest {
+    background: var(--pixel-trail-bright);
+}
+
+@media (hover: none), (pointer: coarse) {
+    .background-pixel-trail {
+        display: none;
+    }
+}

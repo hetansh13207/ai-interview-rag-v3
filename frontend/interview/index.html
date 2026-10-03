@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        AI Interview RAG
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+    <link rel="stylesheet" href="../background-effects.css">
+    <script>
+        window.__clerk_publishable_key = 'pk_test_aW1tdW5lLXB1Zy01ODUyLmNsZXJrLmFjY291bnRzLmRldiQ';
+    </script>
+    <script async crossorigin="anonymous" data-clerk-publishable-key="pk_test_aW1tdW5lLXB1Zy01ODUyLmNsZXJrLmFjY291bnRzLmRldiQ" src="https://immune-pug-5852.clerk.accounts.dev/npm/@clerk/clerk-js@latest/dist/clerk.browser.js" type="text/javascript"></script>
+</head>
+
+
+<body>
+
+<main class="app">
+
+    <section class="card">
+
+
+        <!-- ================================================= -->
+        <!-- HEADER -->
+        <!-- ================================================= -->
+
+        <div class="header">
+            <div class="page-navigation">
+
+                <a
+                    href="../"
+                    class="home-link"
+                >
+                    ← Home
+                </a>
+
+            </div>
+
+            <div class="header-top">
+
+                <p class="eyebrow">
+                    AI INTERVIEW RAG
+                </p>
+
+
+                <button
+                    type="button"
+                    id="themeToggle"
+                    class="theme-toggle"
+                    aria-label="Toggle dark mode"
+                >
+                    🌙 Dark
+                </button>
+
+            </div>
+
+
+            <h1>
+                Start Your Interview
+            </h1>
+
+
+            <p class="subtitle">
+                Upload your resume to create a personalized backend interview.
+            </p>
+
+        </div>
+
+
+        <!-- ================================================= -->
+        <!-- STATUS -->
+        <!-- ================================================= -->
+
+        <div
+            id="status"
+            class="status hidden"
+        ></div>
+
+
+        <!-- ================================================= -->
+        <!-- SETUP -->
+        <!-- ================================================= -->
+
+        <section id="setupSection">
+
+
+            <!-- Resume -->
+
+            <form id="resumeForm">
+
+                <label
+                    for="resumeFile"
+                    class="file-label"
+                >
+
+                    <span class="file-title">
+                        Resume PDF
+                    </span>
+
+
+                    <span class="file-description">
+                        Choose your resume in PDF format.
+                    </span>
+
+                </label>
+
+
+                <input
+                    type="file"
+                    id="resumeFile"
+                    accept=".pdf,application/pdf"
+                    required
+                >
+
+
+                <button
+                    type="submit"
+                    id="uploadButton"
+                >
+                    Upload Resume
+                </button>
+
+            </form>
+
+
+            <!-- ================================================= -->
+            <!-- PROFILE -->
+            <!-- ================================================= -->
+
+            <section
+                id="profileSection"
+                class="profile hidden"
+            >
+
+                <h2>
+                    Candidate Profile
+                </h2>
+
+
+                <div class="profile-grid">
+
+
+                    <div class="profile-item">
+
+                        <span>
+                            Name
+                        </span>
+
+                        <strong id="candidateName">
+                            -
+                        </strong>
+
+                    </div>
+
+
+                    <div class="profile-item">
+
+                        <span>
+                            Target Roles
+                        </span>
+
+                        <strong id="targetRoles">
+                            -
+                        </strong>
+
+                    </div>
+
+
+                    <div class="profile-item full">
+
+                        <span>
+                            Skills
+                        </span>
+
+                        <strong id="skills">
+                            -
+                        </strong>
+
+                    </div>
+
+
+                    <div class="profile-item full">
+
+                        <span>
+                            Experience
+                        </span>
+
+                        <div id="experience"></div>
+
+                    </div>
+
+
+                    <div class="profile-item full">
+
+                        <span>
+                            Projects
+                        </span>
+
+                        <div id="projects"></div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ================================================= -->
+                <!-- PLAN -->
+                <!-- ================================================= -->
+
+                <div
+                    id="interviewPlanPreview"
+                    class="interview-plan hidden"
+                >
+
+                    <h3>
+                        Interview Plan
+                    </h3>
+
+
+                    <p id="questionCountPreview">
+                        Preparing your interview...
+                    </p>
+
+
+                    <div>
+
+                        <span class="plan-label">
+                            Topics
+                        </span>
+
+
+                        <ul id="topicPreview"></ul>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ================================================= -->
+                <!-- TARGET ROLE -->
+                <!-- ================================================= -->
+
+                <div class="interview-setup">
+
+                    <label for="targetRole">
+                        Target Role
+                    </label>
+
+
+                    <input
+                        type="text"
+                        id="targetRole"
+                        placeholder="e.g. Backend Developer"
+                        required
+                    >
+
+
+                    <button
+                        type="button"
+                        id="generatePlanButton"
+                    >
+                        Generate Interview Plan
+                    </button>
+
+
+                    <button
+                        type="button"
+                        id="startInterviewButton"
+                        class="hidden"
+                    >
+                        Start Interview
+                    </button>
+
+                </div>
+
+            </section>
+
+        </section>
+
+
+        <!-- ================================================= -->
+        <!-- INTERVIEW -->
+        <!-- ================================================= -->
+
+        <section
+            id="interviewSection"
+            class="interview hidden"
+        >
+
+            <div class="interview-header">
+
+
+                <div>
+
+                    <p class="eyebrow">
+                        TECHNICAL INTERVIEW
+                    </p>
+
+
+                    <h2 id="questionTopic">
+                        Question
+                    </h2>
+
+                </div>
+
+
+                <div
+                    id="questionProgress"
+                    class="question-progress"
+                >
+                    Question 1 of 6
+                </div>
+
+            </div>
+
+
+            <div class="question-card">
+
+                <p id="interviewQuestion">
+                    Loading question...
+                </p>
+
+            </div>
+
+
+            <div class="answer-area">
+
+                <label for="candidateAnswer">
+                    Your Answer
+                </label>
+
+
+                <textarea
+                    id="candidateAnswer"
+                    rows="7"
+                    placeholder="Type your answer here..."
+                ></textarea>
+
+
+                <button
+                    type="button"
+                    id="submitAnswerButton"
+                >
+                    Submit Answer
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================================================= -->
+        <!-- FINAL REPORT -->
+        <!-- ================================================= -->
+
+        <section
+            id="resultsSection"
+            class="results hidden"
+        >
+
+
+            <!-- REPORT TITLE -->
+
+            <div class="report-header">
+
+                <p class="eyebrow">
+                    INTERVIEW PERFORMANCE REPORT
+                </p>
+
+
+                <h2>
+                    Interview Performance Report
+                </h2>
+
+            </div>
+
+
+            <!-- REPORT INFO -->
+
+            <div class="report-info">
+
+                <p>
+
+                    <strong>
+                        Date:
+                    </strong>
+
+                    <span id="reportDate">
+                        -
+                    </span>
+
+                </p>
+
+
+                <p>
+
+                    <strong>
+                        Candidate:
+                    </strong>
+
+                    <span id="reportCandidate">
+                        -
+                    </span>
+
+                </p>
+
+
+                <p>
+
+                    <strong>
+                        Role:
+                    </strong>
+
+                    <span id="reportRole">
+                        -
+                    </span>
+
+                </p>
+
+            </div>
+
+
+            <!-- ================================================= -->
+            <!-- OVERALL SCORE -->
+            <!-- ================================================= -->
+
+            <div class="report-overall">
+
+                <h3>
+
+                    Overall Score:
+
+                    <span id="finalScore">
+                        0 / 100
+                    </span>
+
+                    -
+
+                    <span id="scoreLabel">
+                        -
+                    </span>
+
+                </h3>
+
+
+                <p id="overallAssessment">
+                    -
+                </p>
+
+            </div>
+
+
+            <!-- ================================================= -->
+            <!-- SCORE BREAKDOWN -->
+            <!-- ================================================= -->
+
+            <div class="report-section">
+
+                <h3>
+                    Score Breakdown
+                </h3>
+
+
+                <div class="score-breakdown-item">
+
+                    <div class="score-breakdown-title">
+
+                        <span>
+                            Technical Correctness
+                        </span>
+
+
+                        <strong id="correctnessReportScore">
+                            0 / 100
+                        </strong>
+
+                    </div>
+
+
+                    <p id="correctnessSummary">
+                        -
+                    </p>
+
+                </div>
+
+
+                <div class="score-breakdown-item">
+
+                    <div class="score-breakdown-title">
+
+                        <span>
+                            Technical Depth
+                        </span>
+
+
+                        <strong id="technicalDepthReportScore">
+                            0 / 100
+                        </strong>
+
+                    </div>
+
+
+                    <p id="technicalDepthSummary">
+                        -
+                    </p>
+
+                </div>
+
+
+                <div class="score-breakdown-item">
+
+                    <div class="score-breakdown-title">
+
+                        <span>
+                            Communication Clarity
+                        </span>
+
+
+                        <strong id="clarityReportScore">
+                            0 / 100
+                        </strong>
+
+                    </div>
+
+
+                    <p id="claritySummary">
+                        -
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================================================= -->
+            <!-- STRENGTHS -->
+            <!-- ================================================= -->
+
+            <div class="report-section">
+
+                <h3>
+                    Strengths
+                </h3>
+
+
+                <ul
+                    id="overallStrengths"
+                    class="report-list"
+                ></ul>
+
+            </div>
+
+
+            <!-- ================================================= -->
+            <!-- AREAS FOR IMPROVEMENT -->
+            <!-- ================================================= -->
+
+            <div class="report-section">
+
+                <h3>
+                    Areas for Improvement
+                </h3>
+
+
+                <div id="overallWeaknesses"></div>
+
+            </div>
+
+
+            <!-- ================================================= -->
+            <!-- FOOTER -->
+            <!-- ================================================= -->
+
+            <div class="report-footer">
+
+                <span>
+
+                    Questions Answered:
+
+                    <strong id="questionsAnswered">
+                        0
+                    </strong>
+
+                </span>
+
+            </div>
+
+
+        </section>
+
+
+    </section>
+
+</main>
+
+
+<script src="../auth.js"></script>
+<script src="script.js"></script>
+<script src="../background-effects.js"></script>
+
+</body>
+
+</html>

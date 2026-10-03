@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        AI Interview Chat
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+    <link rel="stylesheet" href="../background-effects.css">
+
+</head>
+
+
+<body>
+
+<main class="app">
+
+    <!-- ================================================= -->
+    <!-- HEADER -->
+    <!-- ================================================= -->
+
+    <header class="header">
+
+        <a
+            href="../"
+            class="home-link"
+        >
+            ← Back to Home
+        </a>
+
+        <div class="header-row">
+
+            <div>
+
+                <p class="eyebrow">
+                    AI INTERVIEW CHAT
+                </p>
+
+                <h1>
+                    Conversational Technical Interview
+                </h1>
+
+                <p class="subtitle">
+                    Have a natural one-on-one technical
+                    interview based on your resume,
+                    experience, and target role.
+                </p>
+
+            </div>
+
+
+            <button
+                type="button"
+                id="themeToggle"
+                class="theme-toggle"
+            >
+                🌙 Dark
+            </button>
+
+        </div>
+
+    </header>
+
+
+    <!-- ================================================= -->
+    <!-- STATUS -->
+    <!-- ================================================= -->
+
+    <div
+        id="status"
+        class="status hidden"
+    ></div>
+
+
+    <!-- ================================================= -->
+    <!-- SETUP -->
+    <!-- ================================================= -->
+
+    <section
+        id="setupSection"
+        class="card"
+    >
+
+        <div class="section-heading">
+
+            <p class="eyebrow">
+                INTERVIEW SETUP
+            </p>
+
+            <h2>
+                Prepare your interview
+            </h2>
+
+            <p>
+                Upload your resume, choose the role you
+                want to practice for, and select how long
+                you want the interview to run.
+            </p>
+
+        </div>
+
+
+        <!-- ============================================= -->
+        <!-- RESUME -->
+        <!-- ============================================= -->
+
+        <div class="setup-block">
+
+            <label
+                for="resumeFile"
+                class="field-label"
+            >
+                Resume
+            </label>
+
+            <div
+                id="resumeDropzone"
+                class="upload-box"
+            >
+
+                <div class="upload-icon">
+                    PDF
+                </div>
+
+                <div class="upload-content">
+
+                    <strong id="uploadTitle">
+                        Upload your resume
+                    </strong>
+
+                    <span id="uploadDescription">
+                        PDF format only. Your resume will
+                        be processed before the interview.
+                    </span>
+
+                </div>
+
+                <label
+                    for="resumeFile"
+                    id="uploadButton"
+                    class="button secondary-button"
+                >
+                    Choose PDF
+                </label>
+
+                <input
+                    type="file"
+                    id="resumeFile"
+                    accept="application/pdf,.pdf"
+                    hidden
+                >
+
+            </div>
+
+        </div>
+
+
+        <!-- ============================================= -->
+        <!-- PROFILE -->
+        <!-- ============================================= -->
+
+        <section
+            id="profileSection"
+            class="profile hidden"
+        >
+
+            <div class="profile-header">
+
+                <div>
+
+                    <p class="eyebrow">
+                        RESUME PROCESSED
+                    </p>
+
+                    <h3 id="candidateName">
+                        Candidate
+                    </h3>
+
+                </div>
+
+                <span class="success-badge">
+                    Ready
+                </span>
+
+            </div>
+
+
+            <div class="profile-grid">
+
+                <div class="profile-item">
+
+                    <span class="profile-label">
+                        Target roles
+                    </span>
+
+                    <p id="targetRoles">
+                        —
+                    </p>
+
+                </div>
+
+
+                <div class="profile-item">
+
+                    <span class="profile-label">
+                        Skills
+                    </span>
+
+                    <p id="skills">
+                        —
+                    </p>
+
+                </div>
+
+
+                <div class="profile-item full">
+
+                    <span class="profile-label">
+                        Experience
+                    </span>
+
+                    <p id="experience">
+                        —
+                    </p>
+
+                </div>
+
+
+                <div class="profile-item full">
+
+                    <span class="profile-label">
+                        Projects
+                    </span>
+
+                    <p id="projects">
+                        —
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ============================================= -->
+        <!-- ROLE -->
+        <!-- ============================================= -->
+
+        <div class="setup-block">
+
+            <label
+                for="targetRole"
+                class="field-label"
+            >
+                Target role
+            </label>
+
+            <input
+                type="text"
+                id="targetRole"
+                class="field"
+                placeholder="e.g. Data Scientist, Backend Developer, AI Engineer"
+                autocomplete="off"
+                disabled
+            >
+
+        </div>
+
+
+        <!-- ============================================= -->
+        <!-- DURATION -->
+        <!-- ============================================= -->
+
+        <div class="setup-block">
+
+            <span class="field-label">
+                Interview duration
+            </span>
+
+            <div class="duration-grid">
+
+                <button
+                    type="button"
+                    class="duration-option"
+                    data-duration="2"
+                    disabled
+                >
+                    <strong>
+                        2
+                    </strong>
+
+                    <span>
+                        minutes
+                    </span>
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="duration-option"
+                    data-duration="5"
+                    disabled
+                >
+                    <strong>
+                        5
+                    </strong>
+
+                    <span>
+                        minutes
+                    </span>
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="duration-option"
+                    data-duration="10"
+                    disabled
+                >
+                    <strong>
+                        10
+                    </strong>
+
+                    <span>
+                        minutes
+                    </span>
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="duration-option"
+                    data-duration="20"
+                    disabled
+                >
+                    <strong>
+                        20
+                    </strong>
+
+                    <span>
+                        minutes
+                    </span>
+
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- ============================================= -->
+        <!-- START -->
+        <!-- ============================================= -->
+
+        <div class="start-area">
+
+            <button
+                type="button"
+                id="startInterviewButton"
+                class="button primary-button"
+                disabled
+            >
+                Start Interview
+                <span>
+                    →
+                </span>
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================================================= -->
+    <!-- INTERVIEW PREVIEW -->
+    <!-- ================================================= -->
+
+    <section
+        id="startedSection"
+        class="card hidden"
+    >
+
+        <div class="started-header">
+
+            <div>
+
+                <p class="eyebrow">
+                    INTERVIEW STARTED
+                </p>
+
+                <h2 id="startedRole">
+                    Technical Interview
+                </h2>
+
+            </div>
+
+
+            <div class="timer-preview">
+
+                <span>
+                    Duration
+                </span>
+
+                <strong id="startedDuration">
+                    —
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="opening-message">
+
+            <span class="message-label">
+                AI INTERVIEWER
+            </span>
+
+            <p id="openingMessage">
+                —
+            </p>
+
+        </div>
+
+
+        <div class="next-step">
+
+            <p>
+                Your interview session has been created.
+                The conversational interview interface will
+                continue from this session.
+            </p>
+
+            <button
+                type="button"
+                id="continueButton"
+                class="button primary-button"
+            >
+                Continue to Interview
+                <span>
+                    →
+                </span>
+            </button>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<script>
+    window.__clerk_publishable_key = 'pk_test_aW1tdW5lLXB1Zy01ODUyLmNsZXJrLmFjY291bnRzLmRldiQ';
+</script>
+<script async crossorigin="anonymous" data-clerk-publishable-key="pk_test_aW1tdW5lLXB1Zy01ODUyLmNsZXJrLmFjY291bnRzLmRldiQ" src="https://immune-pug-5852.clerk.accounts.dev/npm/@clerk/clerk-js@latest/dist/clerk.browser.js" type="text/javascript"></script>
+<script src="../auth.js"></script>
+<script src="script.js"></script>
+<script src="../background-effects.js"></script>
+
+</body>
+
+</html>
