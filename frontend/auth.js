@@ -1,7 +1,50 @@
-const CLERK_PUBLISHABLE_KEY = 'pk_test_aW1tdW5lLXB1Zy01ODUyLmNsZXJrLmFjY291bnRzLmRldiQ';
 const HOME_URL = `${window.location.origin}/ai-interview-rag-v3/frontend/`;
 
+async function loadClerk() {
+    const response = await fetch('http://127.0.0.1:8000/config');
+    if (!response.ok) {
+        throw new Error(`Failed to load Clerk configuration (${response.status}).`);
+    }
+
+    const config = await response.json();
+    const publishableKey = config.clerk_publishable_key;
+    if (typeof publishableKey !== 'string' || !publishableKey) {
+        throw new Error('Clerk publishable key is not configured.');
+    }
+
+    const keyMatch = publishableKey.match(/^pk_(?:test|live)_([A-Za-z0-9_-]+)$/);
+    if (!keyMatch) {
+        throw new Error('Clerk publishable key has an invalid format.');
+    }
+
+    const encodedFrontendApi = keyMatch[1]
+        .replace(/-/g, '+')
+        .replace(/_/g, '/');
+    const frontendApi = atob(
+        encodedFrontendApi.padEnd(
+            Math.ceil(encodedFrontendApi.length / 4) * 4,
+            '='
+        )
+    ).replace(/\$$/, '');
+    if (!/^[A-Za-z0-9.-]+$/.test(frontendApi)) {
+        throw new Error('Clerk frontend API URL is invalid.');
+    }
+
+    await new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.async = true;
+        script.crossOrigin = 'anonymous';
+        script.dataset.clerkPublishableKey = publishableKey;
+        script.src = `https://${frontendApi}/npm/@clerk/clerk-js@latest/dist/clerk.browser.js`;
+        script.onload = resolve;
+        script.onerror = () => reject(new Error('Failed to load the Clerk browser SDK.'));
+        document.head.appendChild(script);
+    });
+}
+
 async function initClerk() {
+    await loadClerk();
+
     if (!window.Clerk) {
         throw new Error('Clerk browser SDK is not available.');
     }
